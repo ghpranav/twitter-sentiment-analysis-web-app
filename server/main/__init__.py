@@ -112,6 +112,6 @@ def getwiki():
     # if parameters are found, echo the msg parameter 
     if (request.args != None):  
         wiki_search = wikipedia.search(request.args.get("text"), results=1)
-        data["desc"] = wikipedia.summary(wiki_search[0])
+        data["desc"] = wikipedia.summary(wiki_search[0], sentences=2)
         data["success"] = True
     return jsonify(data)
