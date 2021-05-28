@@ -1,6 +1,7 @@
 import os
 from flask import Flask, request, jsonify
 import tweepy
+from tensorflow.python.keras.backend import set_session
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.preprocessing.text import Tokenizer
@@ -27,7 +28,9 @@ CORS(app)
 
 # Keras stuff
 global graph
+sess = tf.Session()
 graph = get_default_graph()
+set_session(sess)
 model = load_model('main/Sentiment_CNN_model.h5')
 MAX_SEQUENCE_LENGTH = 300
 
@@ -65,6 +68,7 @@ def getsentiment():
     # if parameters are found, echo the msg parameter 
     if (request.args != None):  
         with graph.as_default():
+            set_session(sess)
             data["predictions"] = predict(request.args.get("text"))
         data["success"] = True
     return jsonify(data)
@@ -76,6 +80,7 @@ def analyzehashtag():
     negative = 0
     for tweet in tweepy.Cursor(api.search,q="#" + request.args.get("text") + " -filter:retweets",rpp=5,lang="en", tweet_mode='extended').items(100):
         with graph.as_default():
+            set_session(sess)
             prediction = predict(tweet.full_text)
         if(prediction["label"] == "Positive"):
             positive += 1
@@ -93,6 +98,7 @@ def gettweets():
         temp["text"] = tweet.full_text
         temp["username"] = tweet.user.screen_name
         with graph.as_default():
+            set_session(sess)
             prediction = predict(tweet.full_text)
         temp["label"] = prediction["label"]
         temp["score"] = prediction["score"]
