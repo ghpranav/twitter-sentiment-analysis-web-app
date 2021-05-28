@@ -1,3 +1,4 @@
+.elasticbeanstalk/*
 venv/
 __pycache__/
 main/__pycache__/

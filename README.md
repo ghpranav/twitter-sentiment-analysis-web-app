@@ -2,7 +2,7 @@
 
 #### Warning
 
-_The Wikipedia API has been changed and does not return the descriptions through search results, so you might need to figure out another way for that._
+_The Wikipedia API might not work all the time depending on the entered search term._
 <br>
 
 ![App](https://user-images.githubusercontent.com/29514438/59224071-1eb0f600-8beb-11e9-9d93-b648441af4d2.PNG)
@@ -19,9 +19,23 @@ The server pulls tweets using **tweepy** and performs inference using Keras. It 
 
 1. Download the [trained model](https://drive.google.com/file/d/1ckK5m4JysFKtBuC9yCnEaHe6cxOgXlG8/view?usp=sharing) and put into the `server/main` folder <br>(**Note:** _This is the CNN model. f you want use the LSTM model, you'll need to follow the training steps below and put the saved model in `server/main`. Also, don't forget to change the loaded model name in `server/main/init.py`_ )
 
-2. Run `docker-compose up --build` in the terminal from the root folder <br> (**Note:** _Ensure that you have Docker installed_)
+2. Run `python -m venv venv` in the terminal from the `server` folder to create a Python virtual environment <br> (**Note:** _Ensure that you have Python version 3.7 or higher_)
 
-3. Open `http://localhost:5000` in your browser to access the app
+3. Run `venv/scripts/activate` and `pip install -r requirements.txt` while still being in `server` folder to switch to virtual env & install all the required packages
+
+4. Start the Flask server by running `python app.py`
+
+5. Open `http://localhost:8000` in your browser to access the app
+
+### Updating front-end app
+
+1. Run `npm install` in `client` folder to download all the dependent noad modules
+
+2. Make the changes in `client/src` folder as required
+
+3. Check the front-end related changes by running `npm start` & open `http://localhost:5000` in your browser
+
+4. Run `npm run build` after all the changes are made to create optimized production build
 
 ### Training the model
 

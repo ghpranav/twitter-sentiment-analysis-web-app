@@ -9,6 +9,7 @@ import pickle
 from tensorflow.compat.v1 import get_default_graph
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior() 
+import wikipedia
 
 # --------------------------------------
 # BASIC APP SETUP
@@ -105,3 +106,12 @@ def gettweets():
         tweets.append(temp)
     return jsonify({"results": tweets});
     
+@app.route('/getwiki', methods=['GET'])
+def getwiki():
+    data = {"success": False}
+    # if parameters are found, echo the msg parameter 
+    if (request.args != None):  
+        wiki_search = wikipedia.search(request.args.get("text"), results=1)
+        data["desc"] = wikipedia.summary(wiki_search[0])
+        data["success"] = True
+    return jsonify(data)
