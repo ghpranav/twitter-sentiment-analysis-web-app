@@ -1,5 +1,5 @@
 import os
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template, url_for
 import tweepy
 from tensorflow.python.keras.backend import set_session
 from tensorflow.keras.models import load_model
@@ -13,7 +13,7 @@ tf.disable_v2_behavior()
 # --------------------------------------
 # BASIC APP SETUP
 # --------------------------------------
-app = Flask(__name__, instance_relative_config=True)
+app = Flask(__name__, instance_relative_config=True, static_folder="../../client/build/static", template_folder="../../client/build")
 
 # Config
 app_settings = os.getenv(
@@ -60,7 +60,7 @@ def predict(text, include_neutral=True):
 
 @app.route('/')
 def index():
-    return 'Hello'
+    return render_template('index.html')
 
 @app.route('/getsentiment', methods=['GET'])
 def getsentiment():
