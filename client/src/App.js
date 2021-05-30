@@ -36,38 +36,38 @@ class App extends Component {
     var neutral = 0;
     var self = this;
     try {
-      setInterval(async () => {
-        axios
-          .get("http://localhost:8000/analyzehashtag", {
-            params: {
-              text: this.state.hashtag,
-            },
-          })
-          .then(function (response) {
-            negative = response.data.negative;
-            positive = response.data.positive;
-            neutral = response.data.neutral;
-            self.setState({ submitted: true });
-            self.setState({ series: [negative, positive, neutral] });
-          });
-      }, 30000);
+      // setInterval(async () => {
+      axios
+        .get("http://localhost:8000/analyzehashtag", {
+          params: {
+            text: this.state.hashtag,
+          },
+        })
+        .then(function (response) {
+          negative = response.data.negative;
+          positive = response.data.positive;
+          neutral = response.data.neutral;
+          self.setState({ submitted: true });
+          self.setState({ series: [negative, positive, neutral] });
+        });
+      // }, 30000);
     } catch (e) {
       console.log(e);
     }
 
     try {
-      setInterval(async () => {
-        axios
-          .get("http://localhost:8000/gettweets", {
-            params: {
-              text: this.state.hashtag,
-            },
-          })
-          .then(function (response) {
-            console.log(response);
-            self.setState({ tweets: response.data.results });
-          });
-      }, 30000);
+      // setInterval(async () => {
+      axios
+        .get("http://localhost:8000/gettweets", {
+          params: {
+            text: this.state.hashtag,
+          },
+        })
+        .then(function (response) {
+          console.log(response);
+          self.setState({ tweets: response.data.results });
+        });
+      // }, 30000);
     } catch (e) {
       console.log(e);
     }
@@ -134,23 +134,38 @@ class App extends Component {
 
   showAnalysis = () => {
     if (this.state.submitted === true) {
-      return (
-        <div class="row">
-          <div class="col-sm-4">
-            <Chart
-              options={this.state.options}
-              series={this.state.series}
-              type="donut"
-              width="420"
-            />
+      if (this.state.hashtag_desc != null) {
+        return (
+          <div class="row">
+            <div class="col-sm-4">
+              <Chart
+                options={this.state.options}
+                series={this.state.series}
+                type="donut"
+                width="420"
+              />
+            </div>
+            <div class="offset-sm-1 col-sm-7">
+              <h1 class="heading_desc">{this.state.hashtag_desc}</h1>
+              <br />
+              <br />
+            </div>
           </div>
-          <div class="offset-sm-1 col-sm-7">
-            <h1 class="heading_desc">{this.state.hashtag_desc}</h1>
-            <br />
-            <br />
+        );
+      } else {
+        return (
+          <div class="row">
+            <div class="col-sm-4">
+              <Chart
+                options={this.state.options}
+                series={this.state.series}
+                type="donut"
+                width="420"
+              />
+            </div>
           </div>
-        </div>
-      );
+        );
+      }
     }
   };
 
